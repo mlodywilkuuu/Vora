@@ -7,28 +7,25 @@
     <link rel="icon" type="image/png" href="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png">
     <style>
         :root {
-            /* NOWA PALETA BARW - BARDZIEJ SUBTELNA */
-            --bg-gradient-1: #060a1f; /* Głęboki granat */
-            --bg-gradient-2: #1a0b3a; /* Ciemny fiolet */
-            --bg-gradient-3: #0a1f3a; /* Morska głębia */
+            /* PRZYWRÓCONY JASKRAWY GRADIENT V */
+            --v-pink: #ff007f;
+            --v-purple: #9900ff;
+            --v-blue: #00ffff;
             
-            /* KOLORY ELEMENTÓW INTERFEJSU */
+            /* KOLORY ELEMENTÓW INTERFEJSU (Glassmorphism) */
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.7);
-            --input-bg: rgba(255, 255, 255, 0.03);
-            --border-color: rgba(255, 255, 255, 0.06);
-            --accent-color: #00ffff; /* Turkusowy akcent */
-            --glass-bg: rgba(255, 255, 255, 0.01); /* Prawie przezroczyste tło panelu */
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-color: var(--v-blue);
+            --glass-bg: rgba(255, 255, 255, 0.02); /* Przezroczyste tło panelu */
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            /* NOWY MESH GRADIENT W TLE */
-            background: 
-                radial-gradient(circle at 10% 10%, var(--bg-gradient-1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, var(--bg-gradient-2) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, var(--bg-gradient-3) 0%, var(--bg-gradient-1) 100%);
+            /* TŁO CAŁEJ STRONY W GRADIENTU V */
+            background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
@@ -38,17 +35,26 @@
             position: relative;
         }
 
+        /* Dodatkowy pseudo-element dla efektu przyciemnienia tła */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Lekkie przyciemnienie gradientu */
+            z-index: -1;
+        }
+
         /* GŁÓWNY PANEL LOGOWANIA - GLASSMORPHISM */
         .auth-container {
             background-color: var(--glass-bg);
-            backdrop-filter: blur(20px); /* Efekt rozmycia tła */
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px); /* Efekt rozmycia tła strony */
+            -webkit-backdrop-filter: blur(15px);
             width: 100%;
             max-width: 480px;
             padding: 60px 40px;
             border-radius: 24px;
             box-sizing: border-box;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-color);
             position: relative;
             transition: transform 0.3s ease-in-out;
@@ -75,8 +81,7 @@
             font-size: 2.5em;
             font-weight: 900;
             text-align: center;
-            margin-bottom: 10px;
-            /* GRADIENTOWY NAGŁÓWEK - NOWY */
+            margin-bottom: 15px;
             background: linear-gradient(135deg, #ffffff 0%, var(--accent-color) 100%);
             -webkit-background-clip: text;
             background-clip: text;
@@ -125,7 +130,7 @@
         .auth-form input:focus {
             outline: none;
             border-color: rgba(0, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .btn {
@@ -154,61 +159,12 @@
             transform: translateY(-2px);
         }
 
-        /* Sekcja "lub kontynuuj przez" */
-        .auth-divider {
-            text-align: center;
-            position: relative;
-            margin-bottom: 35px;
-            color: var(--text-secondary);
-            font-size: 0.9em;
-        }
-
-        .auth-divider::before,
-        .auth-divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 32%;
-            height: 1px;
-            background-color: var(--border-color);
-        }
-
-        .auth-divider::before { left: 0; }
-        .auth-divider::after { right: 0; }
-
-        /* Przyciski społecznościowe */
-        .social-auth-group {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 45px;
-        }
-
-        .btn-social {
-            width: 100%;
-            padding: 14px;
-            font-size: 0.95em;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .btn-social:hover {
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateY(-1px);
-        }
-
-        /* Ikony społecznościowe (SVG) */
-        .social-icon {
-            width: 20px; height: 20px;
-            fill: currentColor;
-        }
-
         /* Stopka panelu (przełączanie trybów) */
         .auth-footer-text {
             color: var(--text-secondary);
             text-align: center;
             font-size: 0.95em;
+            margin-top: 20px;
         }
 
         .toggle-auth-mode {
@@ -266,32 +222,32 @@
         </form>
     </div>
     
-    <div class="auth-divider">lub kontynuuj przez</div>
-    
-    <div class="social-auth-group">
-        <button class="btn btn-social" id="googleBtn">
-            <svg class="social-icon" viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
-            Google
-        </button>
-        <button class="btn btn-social" id="facebookBtn">
-            <svg class="social-icon" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
-            Facebook
-        </button>
-        <button class="btn btn-social" id="discordBtn">
-            <svg class="social-icon" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.71,32.65-1.72,56.6.51,80.1a105.73,105.73,0,0,0,32.19,16.18,77.59,77.59,0,0,0,6.89-11.11,68.21,68.21,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.18C129.24,52.84,124.39,28.93,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.87,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
-            Discord
-        </button>
-    </div>
-    
     <p class="auth-footer-text" id="authFooter">
         Nie masz konta? <span class="toggle-auth-mode" id="toRegisterBtn">Zarejestruj się</span>
     </p>
     
 </div>
 
-<script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // === WKLEJ TUTAJ SWOJĄ KONFIGURACJĘ FIREBASE (z konsoli punkt A.3) ===
+    const firebaseConfig = {
+        apiKey: "WKLEJ_TWOJE_API_KEY",
+        authDomain: "twoj-projekt.firebaseapp.com",
+        projectId: "twoj-projekt",
+        storageBucket: "twoj-projekt.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:abcdef123456"
+    };
+
+    // Zainicjuj Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
     // =========================================
-    // OBSŁUGA INTERFEJSU (JavaScript)
+    // OBSŁUGA INTERFEJSU I FORMULARZY
     // =========================================
     
     const loginContent = document.getElementById('login-mode-content');
@@ -322,29 +278,55 @@
     // Początkowy listener (dla domyślnego stanu)
     toRegisterBtn.addEventListener('click', showRegister);
 
-    // --- Symulacja Zalogowania ---
+    // =========================================
+    // PRAWDZIWA OBSŁUGA FORMULARZY Z FIREBASE
+    // =========================================
 
-    // Obsługa formularza logowania
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
-        e.preventDefault(); // Zapobiega przeładowaniu strony
-        alert('Pomyślnie zalogowano w Vorze! Tutaj podłączysz swój system logowania.');
-    });
-
-    // Obsługa formularza rejestracji
+    // --- Obsługa prawdziwej Rejestracji ---
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault(); // Zapobiega przeładowaniu strony
-        alert('Konto w Vorze stworzone pomyślnie (tylko E-mail i Hasło)! Zalogowano.');
+        
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+
+        // Firebase: Stwórz nowego użytkownika
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Sukces
+                const user = userCredential.user;
+                alert(`Konto w Vorze stworzone pomyślnie dla ${user.email}! Jesteś zalogowany.`);
+                // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
+            })
+            .catch((error) => {
+                // Błąd (np. e-mail już istnieje, hasło za słabe)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(`Błąd rejestracji: ${errorMessage} (${errorCode})`);
+            });
     });
 
-    // --- Symulacja Logowania Społecznościowego (Działające przyciski) ---
+    // --- Obsługa prawdziwego Logowania ---
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault(); // Zapobiega przeładowaniu strony
+        
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
 
-    const socialLogin = (platform) => {
-        alert(`Otwieram okno logowania ${platform}... (Symulacja)`);
-    };
-
-    document.getElementById('googleBtn').addEventListener('click', () => socialLogin('Google'));
-    document.getElementById('facebookBtn').addEventListener('click', () => socialLogin('Facebook'));
-    document.getElementById('discordBtn').addEventListener('click', () => socialLogin('Discord'));
+        // Firebase: Zaloguj istniejącego użytkownika
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Sukces
+                const user = userCredential.user;
+                alert(`Pomyślnie zalogowano w Vorze jako ${user.email}!`);
+                // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
+            })
+            .catch((error) => {
+                // Błąd (np. złe hasło, użytkownik nie istnieje)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(`Błąd logowania: ${errorMessage} (${errorCode})`);
+            });
+    });
 
 </script>
 
