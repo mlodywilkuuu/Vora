@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V-Bot Music - Twój Bot Muzyczny na Discord</title>
+    <title>Vora - Twój Asystent AI</title>
+    <link rel="icon" type="image/png" href="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png">
     <style>
         :root {
             /* KOLORY GRADIENTU Z LITERY V - DO TŁA STRONY I TEKSTU */
@@ -16,8 +17,6 @@
             --island-border: rgba(255, 255, 255, 0.1);
             --text-primary: #ffffff;
             --text-secondary: #aaaaaa;
-            --btn-bg: #333333;
-            --btn-hover-bg: #444444;
             --accent-color: var(--v-blue);
         }
 
@@ -67,19 +66,12 @@
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 15px;
         }
 
-        /* LOGO GEMINI (zmień źródło na własny plik) */
+        /* LOGO GEMINI (używane jako logo Vora) */
         .logo-img {
             height: 35px;
             width: auto;
-        }
-
-        .logo-text {
-            font-weight: bold;
-            font-size: 1.2em;
-            letter-spacing: 0.5px;
         }
 
         /* PRZYCISKI W MENU */
@@ -102,16 +94,6 @@
             gap: 8px;
         }
 
-        .btn-outline {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-        }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
         .btn-login {
             background-color: var(--accent-color);
             color: #111111;
@@ -119,13 +101,6 @@
 
         .btn-login:hover {
             opacity: 0.9;
-        }
-
-        /* IKONY DISCORD */
-        .discord-icon {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
         }
 
         /* GŁÓWNA TREŚĆ STRONY */
@@ -174,7 +149,7 @@
         /* SEKTSJA PRZYCISKÓW CTA */
         .cta-buttons-wrapper {
             display: flex;
-            justify-content: center;
+            justify(center;
             gap: 20px;
         }
 
@@ -192,6 +167,12 @@
         .btn-cta-secondary {
             color: #ffffff;
             border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* MNIEJSZY TEKST POD PRZYCISKAMI */
@@ -201,123 +182,15 @@
             margin-top: 5px;
         }
 
-        /* MODAL LOGOWANIA/REJESTRACJI */
-        .modal {
-            display: none; /* Ukryty domyślnie */
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: rgba(17, 17, 17, 0.95);
-            margin: 10% auto;
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid var(--island-border);
-            width: 80%;
-            max-width: 450px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-
-        .close {
-            color: #aaaaaa;
-            position: absolute;
-            top: 15px; right: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: #ffffff;
-        }
-
-        .modal-headline {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-            background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Stylizacja formularza */
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .form-group label {
-            font-size: 0.8em;
-            color: var(--text-secondary);
-        }
-
-        .auth-form input {
-            padding: 12px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            font-size: 0.9em;
-        }
-
-        .auth-form input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .btn-auth-submit {
-            margin-top: 10px;
-            background-color: var(--accent-color);
-            color: #111111;
-        }
-
-        .modal-footer-text {
-            margin-top: 20px;
-            font-size: 0.85em;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        .toggle-auth-mode {
-            color: var(--accent-color);
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        /* Chowa sekcję rejestracji */
-        #register-mode {
-            display: none;
-        }
-
     </style>
 </head>
 <body>
 
 <div class="glass-island-menu">
     <div class="logo-section">
-        <img src="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png" alt="Gemini Logo" class="logo-img">
-        <div class="logo-text">V-Bot Music</div>
+        <img src="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png" alt="Vora Logo" class="logo-img">
     </div>
     <div class="header-buttons">
-        <a href="#" class="btn btn-outline" style="border-color: rgba(255, 0, 127, 0.3);">
-            <span style="opacity: 0.7;">💎</span> Kup Premium
-        </a>
         <a href="#" class="btn btn-login" id="loginBtn">Zaloguj</a>
     </div>
 </div>
@@ -325,134 +198,28 @@
 <div class="main-container">
     <div class="main-content">
         <h1 class="main-headline">
-            <span class="headline-text-white">Graj co chcesz,</span><br>
+            <span class="headline-text-white">Odkryj co chcesz,</span><br>
             <span class="headline-text-gradient">kiedy chcesz...</span>
         </h1>
         <p class="sub-headline">
-            Z płynnym odtwarzaniem i niezawodną wydajnością. Czysty dźwięk. Zero problemów. Twój najlepszy bot muzyczny na Discord.
+            Z płynnym przetwarzaniem i niezawodną wydajnością. Czysta inteligencja. Zero problemów. Twój najlepszy asystent AI.
         </p>
         
         <div class="cta-buttons-wrapper">
             <div class="cta-button-group">
                 <a href="#" class="btn btn-login btn-cta">
-                    <svg class="discord-icon" viewBox="0 0 127.14 96.36">
-                        <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.71,32.65-1.72,56.6.51,80.1a105.73,105.73,0,0,0,32.19,16.18,77.59,77.59,0,0,0,6.89-11.11,68.21,68.21,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.18C129.24,52.84,124.39,28.93,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.87,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
-                    </svg>
-                    Dodaj do Discord <span class="arrow-icon">→</span>
+                    Rozpocznij konwersację <span class="arrow-icon">→</span>
                 </a>
-                <span class="cta-subtext">Połącz w 30 sekund</span>
+                <span class="cta-subtext">Połącz w 5 sekund</span>
             </div>
             
             <div class="cta-button-group">
-                <a href="#" class="btn btn-outline btn-cta btn-cta-secondary">Zobacz Komendy</a>
+                <a href="#" class="btn btn-cta btn-cta-secondary">Zobacz możliwości</a>
                 <span class="cta-subtext">Pełna dokumentacja</span>
             </div>
         </div>
     </div>
 </div>
-
-<div id="authModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        
-        <div id="login-mode">
-            <h2 class="modal-headline">Witaj ponownie</h2>
-            <form class="auth-form" id="loginForm">
-                <div class="form-group">
-                    <label for="login-email">Adres E-mail</label>
-                    <input type="email" id="login-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Hasło</label>
-                    <input type="password" id="login-password" required>
-                </div>
-                <button type="submit" class="btn btn-auth-submit btn">Zaloguj</button>
-            </form>
-            <p class="modal-footer-text">Nie masz konta? <a href="#" class="toggle-auth-mode" id="toRegister">Zarejestruj się</a></p>
-        </div>
-        
-        <div id="register-mode">
-            <h2 class="modal-headline">Dołącz do nas</h2>
-            <form class="auth-form" id="registerForm">
-                <div class="form-group">
-                    <label for="register-name">Nazwa użytkownika</label>
-                    <input type="text" id="register-name" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-email">Adres E-mail</label>
-                    <input type="email" id="register-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-password">Hasło</label>
-                    <input type="password" id="register-password" required>
-                </div>
-                <button type="submit" class="btn btn-auth-submit btn">Stwórz konto</button>
-            </form>
-            <p class="modal-footer-text">Masz już konto? <a href="#" class="toggle-auth-mode" id="toLogin">Zaloguj się</a></p>
-        </div>
-        
-    </div>
-</div>
-
-<script>
-    // OBSŁUGA MODALA I LOGOWANIA
-    
-    // Elementy
-    const modal = document.getElementById("authModal");
-    const btn = document.getElementById("loginBtn");
-    const span = document.getElementsByClassName("close")[0];
-    const loginMode = document.getElementById("login-mode");
-    const registerMode = document.getElementById("register-mode");
-    const toRegister = document.getElementById("toRegister");
-    const toLogin = document.getElementById("toLogin");
-    
-    // Przekierowanie po zalogowaniu
-    const redirectUrl = "https://gemini.google.com/app/5859d040854c60f2";
-
-    // Otwórz modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-        // Zawsze otwieraj na trybie logowania
-        loginMode.style.display = "block";
-        registerMode.style.display = "none";
-    }
-
-    // Zamknij modal (krzyżyk)
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // Zamknij modal (kliknięcie poza nim)
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    
-    // Przełączanie między logowaniem a rejestracją
-    toRegister.onclick = function() {
-        loginMode.style.display = "none";
-        registerMode.style.display = "block";
-    }
-    
-    toLogin.onclick = function() {
-        registerMode.style.display = "none";
-        loginMode.style.display = "block";
-    }
-
-    // Symulacja zalogowania i przekierowanie
-    document.getElementById("loginForm").onsubmit = function(e) {
-        e.preventDefault();
-        alert("Pomyślnie zalogowano! Przekierowuję na Twój profil Gemini...");
-        window.location.href = redirectUrl;
-    };
-    
-    document.getElementById("registerForm").onsubmit = function(e) {
-        e.preventDefault();
-        alert("Pomyślnie stworzono konto i zalogowano! Przekierowuję na Twój profil Gemini...");
-        window.location.href = redirectUrl;
-    };
-</script>
 
 </body>
 </html>
