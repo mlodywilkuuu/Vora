@@ -136,7 +136,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .btn-auth-submit {
@@ -171,31 +171,27 @@
         .auth-divider::before { left: 0; }
         .auth-divider::after { right: 0; }
 
-        /* Przyciski społecznościowe */
+        /* Przyciski społecznościowe (Tylko Google!) */
         .social-auth-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
             margin-bottom: 40px;
         }
 
-        .btn-social {
+        .btn-google {
             width: 100%;
             padding: 12px;
-            font-size: 0.9em;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
+            font-size: 0.95em;
+            background: #ffffff; /* Białe tło dla Google */
+            color: #111111; /* Ciemny tekst */
+            border: 1px solid #dadce0;
         }
 
-        .btn-social:hover {
-            background: rgba(255, 255, 255, 0.08);
+        .btn-google:hover {
+            background: #f8f9fa;
         }
 
-        /* Ikony społecznościowe (SVG) */
-        .social-icon {
-            width: 18px; height: 18px;
-            fill: currentColor;
+        /* Ikona Google (SVG z oficjalnymi kolorami) */
+        .google-icon {
+            width: 20px; height: 20px;
         }
 
         /* Stopka panelu (przełączanie trybów) */
@@ -264,17 +260,9 @@
     <div class="auth-divider">lub kontynuuj przez</div>
     
     <div class="social-auth-group">
-        <button class="btn btn-social">
-            <svg class="social-icon" viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
-            Google
-        </button>
-        <button class="btn btn-social">
-            <svg class="social-icon" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
-            Facebook
-        </button>
-        <button class="btn btn-social">
-            <svg class="social-icon" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.71,32.65-1.72,56.6.51,80.1a105.73,105.73,0,0,0,32.19,16.18,77.59,77.59,0,0,0,6.89-11.11,68.21,68.21,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.18C129.24,52.84,124.39,28.93,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.87,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
-            Discord
+        <button class="btn btn-google" id="googleLoginBtn">
+            <svg class="google-icon" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.64 24.55c0-1.65-.15-3.23-.42-4.75H24v9h12.75c-.55 2.87-2.17 5.31-4.61 6.94l7.2 5.58C43.6 37.14 46.64 31.3 46.64 24.55z"/><path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.98-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.2-5.58c-2.18 1.46-4.96 2.39-8.69 2.39-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+            Kontynuuj przez Google
         </button>
     </div>
     
@@ -286,11 +274,12 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    // Dodano GoogleAuthProvider i signInWithPopup dla Google
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // === TWOJA KONFIGURACJA FIREBASE Z DZIAŁAJĄCYM KLUCZEM ===
+    // === TWOJA KONFIGURACJA FIREBASE Z DZIAŁAJĄCYM KLUCZEM (z publicznego czatu, Mateusz!) ===
     const firebaseConfig = {
-        apiKey: "AIzaSyB2sMhft45yN-PhYOJHmuiVIbknB7SKh4E", // <--- TWOJE_API_KEY WKLEJONE!
+        apiKey: "AIzaSyB2sMhft45yN-PhYOJHmuiVIbknB7SKh4E",
         authDomain: "vora-9be46.firebaseapp.com",
         projectId: "vora-9be46",
         storageBucket: "vora-9be46.firebasestorage.app",
@@ -302,6 +291,7 @@
     // Zainicjuj Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider(); // Stwórz dostawcę Google
 
     // =========================================
     // OBSŁUGA INTERFEJSU I FORMULARZY
@@ -339,7 +329,24 @@
     // PRAWDZIWA OBSŁUGA FORMULARZY Z FIREBASE
     // =========================================
 
-    // --- Obsługa prawdziwej Rejestracji ---
+    // --- Obsługa PRAWDZIWEGO Logowania Google ---
+    document.getElementById('googleLoginBtn').addEventListener('click', () => {
+        signInWithPopup(auth, googleProvider)
+            .then((result) => {
+                // Sukces: Zalogowano przez Google
+                const user = result.user;
+                alert(`Pomyślnie zalogowano w Vorze przez Google jako ${user.displayName} (${user.email})!`);
+                // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
+            })
+            .catch((error) => {
+                // Błąd (np. anulowanie logowania)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(`Błąd logowania Google: ${errorMessage} (${errorCode})`);
+            });
+    });
+
+    // --- Obsługa prawdziwej Rejestracji E-mail/Hasło ---
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault(); // Zapobiega przeładowaniu strony
         
@@ -352,7 +359,8 @@
             .then((userCredential) => {
                 // Sukces
                 const user = userCredential.user;
-                alert(`Konto w Vorze stworzone pomyślnie dla ${name} (${user.email})! Tutaj podłączysz swój system rejestracji.`);
+                alert(`Konto w Vorze stworzone pomyślnie dla ${name} (${user.email})!`);
+                // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
             })
             .catch((error) => {
                 // Błąd (np. e-mail już istnieje, hasło za słabe)
@@ -362,7 +370,7 @@
             });
     });
 
-    // --- Obsługa prawdziwego Logowania ---
+    // --- Obsługa prawdziwego Logowania E-mail/Hasło ---
     document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault(); // Zapobiega przeładowaniu strony
         
@@ -374,7 +382,8 @@
             .then((userCredential) => {
                 // Sukces
                 const user = userCredential.user;
-                alert(`Pomyślnie zalogowano w Vorze jako ${user.email}! Tutaj podłączysz swój system logowania.`);
+                alert(`Pomyślnie zalogowano w Vorze jako ${user.email}!`);
+                // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
             })
             .catch((error) => {
                 // Błąd (np. złe hasło, użytkownik nie istnieje)
