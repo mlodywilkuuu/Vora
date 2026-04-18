@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vora - Zaloguj się lub Zarejestruj</title>
+    <link rel="icon" type="image/png" href="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png">
+    <style>
+        :root {
+            /* KOLORY GRADIENTU Z LITERY V - DO TŁA I TEKSTU */
+            --v-pink: #ff007f;
+            --v-purple: #9900ff;
+            --v-blue: #00ffff;
+            
+            /* KOLORY PANELU LOGOWANIA */
+            --bg-color: #0a0a0a; /* Ciemne tło panelu */
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --accent-color: var(--v-blue);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            /* TŁO CAŁEJ STRONY W GRADIENTU V */
+            background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Dodatkowy pseudo-element dla efektu przyciemnienia tła */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Lekkie przyciemnienie gradientu */
+            z-index: -1;
+        }
+
+        /* GŁÓWNY PANEL LOGOWANIA */
+        .auth-container {
+            background-color: var(--bg-color);
+            width: 100%;
+            max-width: 480px;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        /* Przycisk powrotu do strony głównej */
+        .back-to-home {
+            position: absolute;
+            top: 20px; left: 20px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-to-home:hover {
+            color: #ffffff;
+        }
+
+        .auth-headline {
+            font-size: 2.2em;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .auth-subheadline {
+            color: var(--text-secondary);
+            text-align: center;
+            font-size: 1em;
+            margin-bottom: 40px;
+        }
+
+        /* Formularz e-mail/hasło */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            font-weight: bold;
+        }
+
+        .auth-form input {
+            padding: 15px;
+            border-radius: 10px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 1em;
+            transition: border-color 0.2s;
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .btn {
+            padding: 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1em;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-auth-submit {
+            background-color: var(--accent-color);
+            color: #111111;
+            margin-top: 10px;
+        }
+
+        .btn-auth-submit:hover {
+            opacity: 0.9;
+        }
+
+        /* Sekcja "lub zaloguj przez" */
+        .auth-divider {
+            text-align: center;
+            position: relative;
+            margin-bottom: 30px;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 35%;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        .auth-divider::before { left: 0; }
+        .auth-divider::after { right: 0; }
+
+        /* Przyciski społecznościowe */
+        .social-auth-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .btn-social {
+            width: 100%;
+            padding: 12px;
+            font-size: 0.9em;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-social:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Ikony społecznościowe (SVG) */
+        .social-icon {
+            width: 18px; height: 18px;
+            fill: currentColor;
+        }
+
+        /* Stopka panelu (przełączanie trybów) */
+        .auth-footer-text {
+            color: var(--text-secondary);
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .toggle-auth-mode {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* Style dla ukrywania/pokazywania trybów */
+        #register-mode-content { display: none; }
+
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="back-to-home">← Wróć</a>
+
+<div class="auth-container">
+    
+    <div id="login-mode-content">
+        <h2 class="auth-headline">Witaj ponownie</h2>
+        <p class="auth-subheadline">Zaloguj się, aby kontynuować pracę z Vorą.</p>
+        
+        <form class="auth-form" id="loginForm">
+            <div class="form-group">
+                <label for="login-email">Adres E-mail</label>
+                <input type="email" id="login-email" placeholder="twoj@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Hasło</label>
+                <input type="password" id="login-password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-auth-submit">Zaloguj się</button>
+        </form>
+    </div>
+    
+    <div id="register-mode-content">
+        <h2 class="auth-headline">Stwórz konto</h2>
+        <p class="auth-subheadline">Dołącz do Vora i odkryj pełną moc AI.</p>
+        
+        <form class="auth-form" id="registerForm">
+            <div class="form-group">
+                <label for="register-name">Nazwa użytkownika</label>
+                <input type="text" id="register-name" placeholder="TwójNick" required>
+            </div>
+            <div class="form-group">
+                <label for="register-email">Adres E-mail</label>
+                <input type="email" id="register-email" placeholder="twoj@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="register-password">Hasło</label>
+                <input type="password" id="register-password" placeholder="Min. 8 znaków" required>
+            </div>
+            <button type="submit" class="btn btn-auth-submit">Zarejestruj się</button>
+        </form>
+    </div>
+    
+    <div class="auth-divider">lub kontynuuj przez</div>
+    
+    <div class="social-auth-group">
+        <button class="btn btn-social">
+            <svg class="social-icon" viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
+            Google
+        </button>
+        <button class="btn btn-social">
+            <svg class="social-icon" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
+            Facebook
+        </button>
+        <button class="btn btn-social">
+            <svg class="social-icon" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.71,32.65-1.72,56.6.51,80.1a105.73,105.73,0,0,0,32.19,16.18,77.59,77.59,0,0,0,6.89-11.11,68.21,68.21,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.18C129.24,52.84,124.39,28.93,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.87,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+            Discord
+        </button>
+    </div>
+    
+    <p class="auth-footer-text" id="authFooter">
+        Nie masz konta? <span class="toggle-auth-mode" id="toRegisterBtn">Zarejestruj się</span>
+    </p>
+    
+</div>
+
+<script>
+    // =========================================
+    // OBSŁUGA PRZEŁĄCZANIA LOGOWANIE/REJESTRACJA
+    // =========================================
+    
+    const loginContent = document.getElementById('login-mode-content');
+    const registerContent = document.getElementById('register-mode-content');
+    const toRegisterBtn = document.getElementById('toRegisterBtn');
+    const authFooter = document.getElementById('authFooter');
+
+    const showRegister = () => {
+        loginContent.style.display = 'none';
+        registerContent.style.display = 'block';
+        authFooter.innerHTML = 'Masz już konto? <span class="toggle-auth-mode" id="toLoginBtn">Zaloguj się</span>';
+        
+        // Musimy dodać listener do nowo stworzonego elementu
+        document.getElementById('toLoginBtn').addEventListener('click', showLogin);
+    };
+
+    const showLogin = () => {
+        registerContent.style.display = 'none';
+        loginContent.style.display = 'block';
+        authFooter.innerHTML = 'Nie masz konta? <span class="toggle-auth-mode" id="toRegisterBtn">Zarejestruj się</span>';
+        
+        // Musimy dodać listener do nowo stworzonego elementu
+        document.getElementById('toRegisterBtn').addEventListener('click', showRegister);
+    };
+
+    // Początkowy listener (dla domyślnego stanu)
+    toRegisterBtn.addEventListener('click', showRegister);
+
+    // --- Symulacja Zalogowania ---
+
+    // Obsługa formularza logowania
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault(); // Zapobiega przeładowaniu strony
+        alert('Pomyślnie zalogowano w Vorze! Tutaj podłączysz swój system logowania.');
+    });
+
+    // Obsługa formularza rejestracji
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+        e.preventDefault(); // Zapobiega przeładowaniu strony
+        alert('Konto w Vorze stworzone pomyślnie! Tutaj podłączysz swój system rejestracji.');
+    });
+
+</script>
+
+</body>
+</html>
