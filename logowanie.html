@@ -7,25 +7,28 @@
     <link rel="icon" type="image/png" href="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png">
     <style>
         :root {
-            /* KOLORY GRADIENTU Z LITERY V - DO TŁA I TEKSTU */
-            --v-pink: #ff007f;
-            --v-purple: #9900ff;
-            --v-blue: #00ffff;
+            /* NOWA PALETA BARW - BARDZIEJ SUBTELNA */
+            --bg-gradient-1: #060a1f; /* Głęboki granat */
+            --bg-gradient-2: #1a0b3a; /* Ciemny fiolet */
+            --bg-gradient-3: #0a1f3a; /* Morska głębia */
             
-            /* KOLORY PANELU LOGOWANIA */
-            --bg-color: #0a0a0a; /* Ciemne tło panelu */
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --border-color: rgba(255, 255, 255, 0.08);
+            /* KOLORY ELEMENTÓW INTERFEJSU */
             --text-primary: #ffffff;
-            --text-secondary: #aaaaaa;
-            --accent-color: var(--v-blue);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --input-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --accent-color: #00ffff; /* Turkusowy akcent */
+            --glass-bg: rgba(255, 255, 255, 0.01); /* Prawie przezroczyste tło panelu */
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            /* TŁO CAŁEJ STRONY W GRADIENTU V */
-            background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
+            /* NOWY MESH GRADIENT W TLE */
+            background: 
+                radial-gradient(circle at 10% 10%, var(--bg-gradient-1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, var(--bg-gradient-2) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, var(--bg-gradient-3) 0%, var(--bg-gradient-1) 100%);
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
@@ -35,36 +38,33 @@
             position: relative;
         }
 
-        /* Dodatkowy pseudo-element dla efektu przyciemnienia tła */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5); /* Lekkie przyciemnienie gradientu */
-            z-index: -1;
-        }
-
-        /* GŁÓWNY PANEL LOGOWANIA */
+        /* GŁÓWNY PANEL LOGOWANIA - GLASSMORPHISM */
         .auth-container {
-            background-color: var(--bg-color);
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(20px); /* Efekt rozmycia tła */
+            -webkit-backdrop-filter: blur(20px);
             width: 100%;
             max-width: 480px;
             padding: 60px 40px;
-            border-radius: 20px;
+            border-radius: 24px;
             box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--border-color);
             position: relative;
+            transition: transform 0.3s ease-in-out;
         }
 
         /* Przycisk powrotu do strony głównej */
         .back-to-home {
             position: absolute;
-            top: 20px; left: 20px;
+            top: 25px; left: 25px;
             font-size: 0.9em;
             color: var(--text-secondary);
             text-decoration: none;
             transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .back-to-home:hover {
@@ -72,11 +72,12 @@
         }
 
         .auth-headline {
-            font-size: 2.2em;
+            font-size: 2.5em;
             font-weight: 900;
             text-align: center;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
+            margin-bottom: 10px;
+            /* GRADIENTOWY NAGŁÓWEK - NOWY */
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-color) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -86,46 +87,49 @@
             color: var(--text-secondary);
             text-align: center;
             font-size: 1em;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
         }
 
         /* Formularz e-mail/hasło */
         .auth-form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 22px;
+            margin-bottom: 35px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 9px;
         }
 
         .form-group label {
             font-size: 0.85em;
             color: var(--text-secondary);
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .auth-form input {
-            padding: 15px;
-            border-radius: 10px;
+            padding: 16px;
+            border-radius: 12px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             font-size: 1em;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, background 0.2s;
         }
 
         .auth-form input:focus {
             outline: none;
-            border-color: var(--accent-color);
+            border-color: rgba(0, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .btn {
-            padding: 15px;
+            padding: 16px;
             border-radius: 30px;
             font-weight: bold;
             font-size: 1em;
@@ -136,26 +140,27 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .btn-auth-submit {
             background-color: var(--accent-color);
-            color: #111111;
-            margin-top: 10px;
+            color: #060a1f; /* Ciemny tekst na jasnym tle */
+            margin-top: 15px;
         }
 
         .btn-auth-submit:hover {
             opacity: 0.9;
+            transform: translateY(-2px);
         }
 
-        /* Sekcja "lub zaloguj przez" */
+        /* Sekcja "lub kontynuuj przez" */
         .auth-divider {
             text-align: center;
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             color: var(--text-secondary);
-            font-size: 0.85em;
+            font-size: 0.9em;
         }
 
         .auth-divider::before,
@@ -163,7 +168,7 @@
             content: '';
             position: absolute;
             top: 50%;
-            width: 35%;
+            width: 32%;
             height: 1px;
             background-color: var(--border-color);
         }
@@ -175,26 +180,27 @@
         .social-auth-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 40px;
+            gap: 16px;
+            margin-bottom: 45px;
         }
 
         .btn-social {
             width: 100%;
-            padding: 12px;
-            font-size: 0.9em;
-            background: var(--input-bg);
+            padding: 14px;
+            font-size: 0.95em;
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
         }
 
         .btn-social:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-1px);
         }
 
         /* Ikony społecznościowe (SVG) */
         .social-icon {
-            width: 18px; height: 18px;
+            width: 20px; height: 20px;
             fill: currentColor;
         }
 
@@ -202,7 +208,7 @@
         .auth-footer-text {
             color: var(--text-secondary);
             text-align: center;
-            font-size: 0.9em;
+            font-size: 0.95em;
         }
 
         .toggle-auth-mode {
@@ -219,7 +225,10 @@
 </head>
 <body>
 
-<a href="index.html" class="back-to-home">← Wróć</a>
+<a href="index.html" class="back-to-home">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    Wróć
+</a>
 
 <div class="auth-container">
     
@@ -246,10 +255,6 @@
         
         <form class="auth-form" id="registerForm">
             <div class="form-group">
-                <label for="register-name">Nazwa użytkownika</label>
-                <input type="text" id="register-name" placeholder="TwójNick" required>
-            </div>
-            <div class="form-group">
                 <label for="register-email">Adres E-mail</label>
                 <input type="email" id="register-email" placeholder="twoj@email.com" required>
             </div>
@@ -264,15 +269,15 @@
     <div class="auth-divider">lub kontynuuj przez</div>
     
     <div class="social-auth-group">
-        <button class="btn btn-social">
+        <button class="btn btn-social" id="googleBtn">
             <svg class="social-icon" viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
             Google
         </button>
-        <button class="btn btn-social">
+        <button class="btn btn-social" id="facebookBtn">
             <svg class="social-icon" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
             Facebook
         </button>
-        <button class="btn btn-social">
+        <button class="btn btn-social" id="discordBtn">
             <svg class="social-icon" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.71,32.65-1.72,56.6.51,80.1a105.73,105.73,0,0,0,32.19,16.18,77.59,77.59,0,0,0,6.89-11.11,68.21,68.21,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.18C129.24,52.84,124.39,28.93,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.87,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
             Discord
         </button>
@@ -286,13 +291,15 @@
 
 <script>
     // =========================================
-    // OBSŁUGA PRZEŁĄCZANIA LOGOWANIE/REJESTRACJA
+    // OBSŁUGA INTERFEJSU (JavaScript)
     // =========================================
     
     const loginContent = document.getElementById('login-mode-content');
     const registerContent = document.getElementById('register-mode-content');
     const toRegisterBtn = document.getElementById('toRegisterBtn');
     const authFooter = document.getElementById('authFooter');
+
+    // --- Przełączanie Trybów (Logowanie/Rejestracja) ---
 
     const showRegister = () => {
         loginContent.style.display = 'none';
@@ -326,8 +333,18 @@
     // Obsługa formularza rejestracji
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault(); // Zapobiega przeładowaniu strony
-        alert('Konto w Vorze stworzone pomyślnie! Tutaj podłączysz swój system rejestracji.');
+        alert('Konto w Vorze stworzone pomyślnie (tylko E-mail i Hasło)! Zalogowano.');
     });
+
+    // --- Symulacja Logowania Społecznościowego (Działające przyciski) ---
+
+    const socialLogin = (platform) => {
+        alert(`Otwieram okno logowania ${platform}... (Symulacja)`);
+    };
+
+    document.getElementById('googleBtn').addEventListener('click', () => socialLogin('Google'));
+    document.getElementById('facebookBtn').addEventListener('click', () => socialLogin('Facebook'));
+    document.getElementById('discordBtn').addEventListener('click', () => socialLogin('Discord'));
 
 </script>
 
