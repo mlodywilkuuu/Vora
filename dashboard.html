@@ -7,15 +7,14 @@
     <link rel="icon" type="image/png" href="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png">
     <style>
         :root {
-            /* KOLORY GRADIENTU Z LITERY V (Jaskrawe!) */
+            /* KOLORY GRADIENTU Z LITERY V */
             --v-pink: #ff007f;
             --v-purple: #9900ff;
             --v-blue: #00ffff;
             
             /* KOLORY INTERFEJSU (Glassmorphism, Ciemny Motyw) */
-            --app-bg: transparent; /* !!! PRZYWRÓCONO PEŁNY GRADIENT W TLE !!! */
-            --sidebar-bg: rgba(0, 0, 0, 0.4); /* Półprzezroczysty sidebar */
-            --card-bg: rgba(255, 255, 255, 0.04);
+            --app-bg: transparent; /* Tło unosi się na gradiencie body */
+            --sidebar-bg: rgba(0, 0, 0, 0.4); /* Półprzezroczysty boczny panel */
             --border-color: rgba(255, 255, 255, 0.08);
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.7);
@@ -29,7 +28,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            /* !!! TŁO VORY (Pełny Gradient) !!! */
+            /* TŁO CAŁEJ APLIKACJI (Pełny Gradient Vora) */
             background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
             color: var(--text-primary);
             height: 100vh;
@@ -38,7 +37,7 @@
             position: relative;
         }
 
-        /* Dodatkowy pseudo-element dla efektu przyciemnienia tła */
+        /* Pseudo-element dla efektu przyciemnienia tła gradientowego */
         body::before {
             content: '';
             position: absolute;
@@ -47,7 +46,7 @@
             z-index: -1;
         }
 
-        /* --- NAGŁÓWEK (Top Bar Vora - Minimalny) --- */
+        /* --- NAGŁÓWEK (Top Bar Minimalny) --- */
         .app-header {
             width: 100%; height: 70px;
             padding: 0 30px; display: flex;
@@ -64,17 +63,15 @@
             color: transparent; text-decoration: none;
         }
 
-        .header-actions { display: flex; align-items: center; gap: 20px; }
-        .user-menu { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: #ffffff; color: #111111; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1em; border: 2px solid var(--border-color); }
+        /* --- SEKACJA AWATARA USUNIĘTA !!! --- */
+        .header-actions { display: none; } /* Cała sekcja awatara ukryta */
 
         /* ========================================= */
         /* --- PANEL BOCZNY (Sidebar z Historią) --- */
         /* ========================================= */
         .app-sidebar {
             width: 280px; height: 100%;
-            /* !!! PANEL BOCZNY JEST TERAZ PRZEZROCZYSTY !!! */
-            background-color: var(--sidebar-bg);
+            background-color: var(--sidebar-bg); /* Półprzezroczysty */
             border-right: 1px solid var(--border-color);
             display: flex; flex-direction: column;
             padding: 20px 15px; box-sizing: border-box;
@@ -105,7 +102,7 @@
 
         .history-title { font-size: 0.85em; font-weight: bold; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
 
-        /* Lista Tytułów Czatów */
+        /* Lista Tytułów Czatów (Działająca) */
         .chat-titles-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
 
         .chat-title-item {
@@ -134,7 +131,7 @@
         .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.8em; text-align: center; }
 
         /* ========================================= */
-        /* --- GŁÓWNA TREŚĆ (Czat) --- */
+        /* --- GŁÓWNA TREŚĆ (Czat na gradiencie) --- */
         /* ========================================= */
         .app-main {
             flex: 1; display: flex; flex-direction: column;
@@ -142,7 +139,7 @@
             margin: 0 auto; padding: 20px 0;
             box-sizing: border-box; position: relative;
             z-index: 5; overflow: hidden;
-            /* !!! CZAT JEST TERAZ PRZEZROCZYSTY !!! */
+            /* Czat unosi się na przezroczystym tle */
             background-color: var(--app-bg);
         }
 
@@ -170,7 +167,7 @@
         .dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes dotPulse { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
 
-        /* --- Pole Zapytania (Input - Wzór ze zdjęcia Gemini) --- */
+        /* --- Pole Zapytania (Input) --- */
         .chat-input-area { width: 100%; padding: 0 20px; box-sizing: border-box; margin-bottom: 20px; }
 
         .chat-container {
@@ -195,7 +192,7 @@
         }
         .chat-textarea::placeholder { color: rgba(255, 255, 255, 0.4); }
 
-        /* Pasek narzędzi w inpucie (Dolny Bar inputa) */
+        /* Pasek narzędzi w inpucie */
         .chat-toolbar { display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); font-size: 0.9em; }
         .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 15px; }
 
@@ -234,7 +231,7 @@
         }
         .btn-close-speech:hover { background: rgba(255, 255, 255, 0.2); }
 
-        /* Animowane, szklane kółko Vora */
+        /* Animowane kółko Vora */
         .fora-core-circle {
             width: 250px; height: 250px; border-radius: 50%;
             background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
@@ -245,9 +242,6 @@
 
         @keyframes corePulse { 0% { transform: scale(1); box-shadow: 0 0 50px rgba(0, 255, 255, 0.3); } 50% { transform: scale(1.03); box-shadow: 0 0 70px rgba(255, 0, 127, 0.4); } 100% { transform: scale(1); box-shadow: 0 0 50px rgba(0, 255, 255, 0.3); } }
 
-        /* Dodatkowy efekt szkła */
-        .fora-core-circle::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: rgba(255, 255, 255, 0.1); border-radius: 50%; }
-
         /* Tekst "Słucham..." */
         .speech-status { font-size: 1.5em; font-weight: bold; color: #ffffff; margin-top: 50px; opacity: 0.8; }
 
@@ -257,13 +251,7 @@
 
 <header class="app-header">
     <a href="index.html" class="header-logo">Vora</a>
-    
-    <div class="header-actions">
-        <div class="user-menu" id="userMenu">
-            <div class="user-avatar" id="userInicjały">?</div>
-        </div>
-    </div>
-</header>
+    </header>
 
 <aside class="app-sidebar">
     <a href="dashboard.html" class="btn-new-chat">
@@ -345,9 +333,8 @@
     const auth = getAuth(app);
 
     // =========================================
-    // OBSŁUGA DANYCH UŻYTKOWNIKA I OCHRONA
+    // OCHRONA DASHBOARDA ZAMIAST USUNIĘTEGO POWITANIA !!! ===
     // =========================================
-    const userInicjałyEl = document.getElementById('userInicjały');
 
     // === SPRAWDŹ, CZY UŻYTKOWNIK JEST ZALOGOWANY ===
     onAuthStateChanged(auth, (user) => {
@@ -357,9 +344,7 @@
             window.location.href = "logowanie.html";
         } else {
             console.log("Użytkownik zalogowany:", user.email);
-            // Ustaw inicjały
-            const inicjały = user.email[0].toUpperCase();
-            userInicjałyEl.innerText = inicjały;
+            // Tutaj ewentualnie ładuj poprzednie czaty z Firestore.
         }
     });
 
@@ -367,9 +352,7 @@
 
 <script type="module">
     // === TWOJA KONFIGURACJA GEMINI AI (Mateusz, naprawione połączenie!) ===
-    // (Ten klucz jest jaskrawo widoczny na screenie, więc go używam)
     const GEMINI_API_KEY = "AIzaSyCxV2bQ4jD-VfVpH9Y1Y7_pIO1U90U0g8Q";
-    // !!! Naprawiono URL API (Dodano b, aby był v1beta) !!!
     const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     // === ELEMENTY CZATU ===
@@ -378,7 +361,7 @@
     const historyEl = document.getElementById('chatHistory');
     const historyListEl = document.getElementById('chatHistoryList');
 
-    // === !!! NOWE ELEMENTY ROZMOWY GŁOSOWEJ !!! ===
+    // === ELEMENTY ROZMOWY GŁOSOWEJ ===
     const btnSpeechEl = document.getElementById('btnSpeechInput');
     const overlaySpeechEl = document.getElementById('poraSpeechOverlay');
     const btnCloseSpeechEl = document.getElementById('btnCloseSpeech');
@@ -400,12 +383,12 @@
     });
 
     // =========================================
-    // OBSŁUGA DYNAMICZNEGO SIDEBARA (HISTORIA I USUWANIEM)
+    // OBSŁUGA DYNAMICZNEGO SIDEBARA (HISTORIA) ===
     // =========================================
     
     // --- Dodawanie Nowego Czatu do Historii Sidebara (Normalna nazwa) ---
     const dodajCzatDoHistoriiSidebar = (trescUsera) => {
-        // !!! NOWE: Stwórz tytuł na podstawie pierwszych 30 znaków wiadomości !!!
+        // !!! NOWE: Tytuł na podstawie pierwszych 30 znaków wiadomości !!!
         let tytulCzatu = trescUsera.trim();
         if (tytulCzatu.length > 30) { tytulCzatu = tytulCzatu.substring(0, 30) + '...'; }
 
@@ -418,7 +401,7 @@
         textEl.classList.add('chat-item-text');
         textEl.innerText = tytulCzatu;
         
-        // Stwórz przycisk kosza do usuwania czatu
+        // Stwórz kosz do usuwania czatu
         const deleteBtnEl = document.createElement('button');
         deleteBtnEl.classList.add('btn-delete-chat');
         deleteBtnEl.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
@@ -427,7 +410,6 @@
             e.stopPropagation(); // Zapobiega kliknięciu w tytuł czatu
             if (confirm(`Czy na pewno chcesz usunąć czat "${tytulCzatu}"?`)) {
                 titleItemEl.remove();
-                // Tutaj można dodać usuwanie czatu z Firebase Firestore
             }
         });
 
@@ -449,7 +431,7 @@
     });
 
     // =========================================
-    // OBSŁUGA CZATU I GOOGLE GEMINI AI (Mateusz, naprawione!)
+    // OBSŁUGA CZATU I GOOGLE GEMINI AI (Mateusz, naprawione!) ===
     // =========================================
 
     const dodajWiadomoscDoWidoku = (tresc, czyUser) => {
@@ -483,10 +465,9 @@
         // 1. Dodaj Twoje pytanie
         dodajWiadomoscDoWidoku(trescUsera, true);
         
-        // === !!! NOWOŚĆ !!! ===
-        // 1a. Sprawdź, czy to pierwsza wiadomość w nowym czacie. Stwórz Normalny tytuł.
+        // 1a. !!! NOWE: Stwórz Tytuł w bocznym menu przy PIERWSZEJ wiadomości !!! ===
         if (historyEl.getElementsByClassName('message user').length === 1) {
-            dodajCzatDoHistoriiSidebar(trescUsera); // Przekaż wiadomość, aby stworzyć tytuł
+            dodajCzatDoHistoriiSidebar(trescUsera); 
         }
 
         // 2. Pokaż kropki pisania
@@ -507,12 +488,11 @@
                 body: JSON.stringify(payload)
             });
 
-            if (!response.ok) throw new Error(`Błąd połączenia z Gemini AI. Kod: ${response.status}`);
+            if (!response.ok) throw new Error(`Błąd AI. Kod: ${response.status}`);
 
             const data = await response.json();
 
-            // 5. WYDOBĄDŹ ODPOWIEDŹ Z DANYCH GOOGLE (Nowy format v1beta)
-            // (Google zwraca dane w specyficznym formacie: data.candidates[0].content.parts[0].text)
+            // 5. WYDOBĄDŹ ODPOWIEDŹ Z DANYCH GOOGLE (Format bbeta)
             const trescVory = data.candidates[0].content.parts[0].text;
 
             // 6. Pokaz odpowiedź Vory w czacie
@@ -520,10 +500,9 @@
             dodajWiadomoscDoWidoku(trescVory, false); // Dodaj odpowiedź
 
         } catch (error) {
-            // 7. Obsługa błędów
             console.error("Błąd Vory:", error);
             ukryjPisanieVory();
-            dodajWiadomoscDoWidoku("Przepraszam, Mateusz, ale mam chwilowy błąd połączenia z moim rdzeniem AI. Spróbuj za chwilę.", false);
+            dodajWiadomoscDoWidoku("Przepraszam, ale mam błąd połączenia z moim rdzeniem AI. Spróbuj za chwilę.", false);
         }
     };
 
@@ -543,7 +522,6 @@
 
     // Enter w inpucie
     inputEl.addEventListener('keydown', (e) => {
-        // Jeśli wciśnięto Enter BEZ Shifta (Shift+Enter robi nową linię)
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault(); // Zapobiega nowej linii
             obslozWyslanie();
