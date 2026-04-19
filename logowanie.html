@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png">
     <style>
         :root {
-            /* KOLORY GRADIENTU V (Jaskrawe!) */
+            /* KOLORY GRADIENTU Z LITERY V (Jaskrawe!) */
             --v-pink: #ff007f;
             --v-purple: #9900ff;
             --v-blue: #00ffff;
@@ -281,7 +281,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // === TWOJA KONFIGURACJĘ FIREBASE Z DZIAŁAJĄCYM KLUCZEM (z publicznego czatu, Mateusz!) ===
+    // === TWOJA KONFIGURACJA FIREBASE (z publicznego czatu, Mateusz!) ===
     const firebaseConfig = {
         apiKey: "AIzaSyB2sMhft45yN-PhYOJHmuiVIbknB7SKh4E",
         authDomain: "vora-9be46.firebaseapp.com",
@@ -298,7 +298,7 @@
     const googleProvider = new GoogleAuthProvider(); // Stwórz dostawcę Google
 
     // =========================================
-    // OBSŁUGA INTERFEJSU I FORMULARZY
+    // OBSŁUGA INTERFEJSU I PRZEŁĄCZANIA
     // =========================================
     
     const loginContent = document.getElementById('login-mode-content');
@@ -306,54 +306,49 @@
     const toRegisterBtn = document.getElementById('toRegisterBtn');
     const authFooter = document.getElementById('authFooter');
 
-    // --- Przełączanie Trybów (Logowanie/Rejestracja) ---
-
     const showRegister = () => {
-        loginContent.style.display = 'none';
-        registerContent.style.display = 'block';
+        loginContent.style.display = 'none'; registerContent.style.display = 'block';
         authFooter.innerHTML = 'Masz już konto? <span class="toggle-auth-mode" id="toLoginBtn">Zaloguj się</span>';
-        
-        // Musimy dodać listener do nowo stworzonego elementu
         document.getElementById('toLoginBtn').addEventListener('click', showLogin);
     };
 
     const showLogin = () => {
-        registerContent.style.display = 'none';
-        loginContent.style.display = 'block';
+        registerContent.style.display = 'none'; loginContent.style.display = 'block';
         authFooter.innerHTML = 'Nie masz konta? <span class="toggle-auth-mode" id="toRegisterBtn">Zarejestruj się</span>';
-        
-        // Musimy dodać listener do nowo stworzonego elementu
         document.getElementById('toRegisterBtn').addEventListener('click', showRegister);
     };
 
-    // Początkowy listener (dla domyślnego stanu)
     toRegisterBtn.addEventListener('click', showRegister);
 
     // =========================================
-    // PRAWDZIWA OBSŁUGA FORMULARZY Z FIREBASE
+    // PRAWDZIWA OBSŁUGA LOGOWANIA Z PRZEKIEROWANIEM (Mateusz!)
     // =========================================
 
-    // --- Obsługa prawdziwego Logowania Google ---
+    // --- Obsługa PRAWDZIWEGO Logowania Google ---
     document.getElementById('googleLoginBtn').addEventListener('click', () => {
         signInWithPopup(auth, googleProvider)
             .then((result) => {
                 // Sukces: Zalogowano przez Google
-                const user = result.user;
-                alert(`Pomyślnie zalogowano w Vorze przez Google jako ${user.displayName} (${user.email})!`);
-                // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
+                console.log("Zalogowano przez Google:", result.user.email);
+                // === KLUCZOWA ZMIANA: PRZEKIERUJ DO DASHBOARDA ===
+                window.location.href = "dashboard.html";
             })
             .catch((error) => {
-                // Błąd (np. anulowanie logowania)
+                // Obsługa błędów (np. anulowanie przez użytkownika lub unauthorized domain)
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                alert(`Błąd logowania Google: ${errorMessage} (${errorCode})`);
+                console.error("Błąd Google:", errorCode, errorMessage);
+                if (errorCode === "auth/unauthorized-domain") {
+                    alert("Błąd: Twoja domena na GitHub Pages nie jest zaufana w Firebase. Sprawdź ustawienia Authentication -> Settings -> Authorized Domains.");
+                } else {
+                    alert(`Błąd logowania Google: ${errorMessage}`);
+                }
             });
     });
 
-    // --- Obsługa prawdziwej Rejestracji E-mail/Hasło (NICK USUNIĘTY) ---
+    // --- Obsługa prawdziwej Rejestracji E-mail/Hasło ---
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault(); // Zapobiega przeładowaniu strony
-        
         const email = document.getElementById('register-email').value;
         const password = document.getElementById('register-password').value;
 
@@ -361,22 +356,28 @@
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Sukces
-                const user = userCredential.user;
-                alert(`Konto w Vorze stworzone pomyślnie dla ${user.email}! Jesteś zalogowany.`);
-                // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
+                console.log("Konto stworzone pomyślnie dla:", userCredential.user.email);
+                // === KLUCZOWA ZMIANA: PRZEKIERUJ DO DASHBOARDA ZARAZ PO REJESTRACJI ===
+                window.location.href = "dashboard.html";
             })
             .catch((error) => {
                 // Błąd (np. e-mail już istnieje, hasło za słabe)
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                alert(`Błąd rejestracji: ${errorMessage} (${errorCode})`);
+                console.error("Błąd rejestracji:", errorCode, errorMessage);
+                if (errorCode === "auth/email-already-in-use") {
+                    alert("Ten adres e-mail jest już przypisany do innego konta. Zaloguj się.");
+                } else if (errorCode === "auth/weak-password") {
+                    alert("Hasło jest za słabe. Musi mieć co najmniej 6 znaków.");
+                } else {
+                    alert(`Błąd rejestracji: ${errorMessage}`);
+                }
             });
     });
 
     // --- Obsługa prawdziwego Logowania E-mail/Hasło ---
     document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault(); // Zapobiega przeładowaniu strony
-        
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
 
@@ -384,15 +385,22 @@
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Sukces
-                const user = userCredential.user;
-                alert(`Pomyślnie zalogowano w Vorze jako ${user.email}!`);
-                // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
+                console.log("Pomyślnie zalogowano w Vorze jako:", userCredential.user.email);
+                // === KLUCZOWA ZMIANA: PRZEKIERUJ DO DASHBOARDA ===
+                window.location.href = "dashboard.html";
             })
             .catch((error) => {
                 // Błąd (np. złe hasło, użytkownik nie istnieje)
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                alert(`Błąd logowania: ${errorMessage} (${errorCode})`);
+                console.error("Błąd logowania:", errorCode, errorMessage);
+                if (errorCode === "auth/wrong-password") {
+                    alert("Niepoprawne hasło. Spróbuj ponownie.");
+                } else if (errorCode === "auth/user-not-found") {
+                    alert("Nie znaleziono użytkownika o takim adresie e-mail. Zarejestruj się.");
+                } else {
+                    alert(`Błąd logowania: ${errorMessage}`);
+                }
             });
     });
 
