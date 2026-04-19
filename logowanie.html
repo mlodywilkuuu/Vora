@@ -7,17 +7,16 @@
     <link rel="icon" type="image/png" href="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png">
     <style>
         :root {
-            /* KOLORY GRADIENTU Z LITERY V */
+            /* KOLORY GRADIENTU V (Przywrócone jaskrawe!) */
             --v-pink: #ff007f;
             --v-purple: #9900ff;
             --v-blue: #00ffff;
             
-            /* KOLORY PANELU LOGOWANIA */
-            --bg-color: #0a0a0a; /* Ciemne tło panelu */
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --border-color: rgba(255, 255, 255, 0.08);
+            /* KOLORY PANELU LOGOWANIA (Glassmorphism) */
             --text-primary: #ffffff;
-            --text-secondary: #aaaaaa;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --input-bg: rgba(255, 255, 255, 0.05); /* Półprzezroczyste tło inputów */
+            --border-color: rgba(255, 255, 255, 0.08); /* Delikatna ramka szklanego panelu */
             --accent-color: var(--v-blue);
         }
 
@@ -44,27 +43,32 @@
             z-index: -1;
         }
 
-        /* GŁÓWNY PANEL LOGOWANIA */
+        /* GŁÓWNY PANEL LOGOWANIA - GLASSMORPHISM (BEZ CZARNEGO KWADRATU!) */
         .auth-container {
-            background-color: var(--bg-color);
+            background-color: transparent; /* Usunięto czarne tło */
+            backdrop-filter: blur(10px); /* Efekt rozmycia tła strony */
+            -webkit-backdrop-filter: blur(10px);
             width: 100%;
             max-width: 480px;
             padding: 60px 40px;
             border-radius: 20px;
             box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Subtelny cień */
+            border: 1px solid var(--border-color); /* Cienkka ramka szklanego panelu */
             position: relative;
         }
 
         /* Przycisk powrotu do strony głównej */
         .back-to-home {
             position: absolute;
-            top: 20px; left: 20px;
+            top: 25px; left: 25px;
             font-size: 0.9em;
             color: var(--text-secondary);
             text-decoration: none;
             transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .back-to-home:hover {
@@ -105,7 +109,7 @@
 
         .form-group label {
             font-size: 0.85em;
-            color: var(--text-secondary);
+            color: #ffffff; /* Biały label dla przezroczystego tła */
             font-weight: bold;
         }
 
@@ -116,12 +120,13 @@
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             font-size: 1em;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, background 0.2s;
         }
 
         .auth-form input:focus {
             outline: none;
-            border-color: var(--accent-color);
+            border-color: rgba(0, 255, 255, 0.5); /* Subtelny fokus akcentem */
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .btn {
@@ -136,7 +141,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 8px;
         }
 
         .btn-auth-submit {
@@ -171,7 +176,7 @@
         .auth-divider::before { left: 0; }
         .auth-divider::after { right: 0; }
 
-        /* Przyciski społecznościowe (Tylko Google!) */
+        /* Przycisk społecznościowy (Tylko Google!) */
         .social-auth-group {
             margin-bottom: 40px;
         }
@@ -199,6 +204,7 @@
             color: var(--text-secondary);
             text-align: center;
             font-size: 0.9em;
+            margin-top: 20px;
         }
 
         .toggle-auth-mode {
@@ -215,7 +221,10 @@
 </head>
 <body>
 
-<a href="index.html" class="back-to-home">← Wróć</a>
+<a href="index.html" class="back-to-home">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    Wróć
+</a>
 
 <div class="auth-container">
     
@@ -241,10 +250,6 @@
         <p class="auth-subheadline">Dołącz do Vora i odkryj pełną moc AI.</p>
         
         <form class="auth-form" id="registerForm">
-            <div class="form-group">
-                <label for="register-name">Nazwa użytkownika</label>
-                <input type="text" id="register-name" placeholder="TwójNick" required>
-            </div>
             <div class="form-group">
                 <label for="register-email">Adres E-mail</label>
                 <input type="email" id="register-email" placeholder="twoj@email.com" required>
@@ -274,10 +279,9 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    // Dodano GoogleAuthProvider i signInWithPopup dla Google
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // === TWOJA KONFIGURACJA FIREBASE Z DZIAŁAJĄCYM KLUCZEM (z publicznego czatu, Mateusz!) ===
+    // === TWOJA KONFIGURACJĘ FIREBASE Z DZIAŁAJĄCYM KLUCZEM (z publicznego czatu, Mateusz!) ===
     const firebaseConfig = {
         apiKey: "AIzaSyB2sMhft45yN-PhYOJHmuiVIbknB7SKh4E",
         authDomain: "vora-9be46.firebaseapp.com",
@@ -329,7 +333,7 @@
     // PRAWDZIWA OBSŁUGA FORMULARZY Z FIREBASE
     // =========================================
 
-    // --- Obsługa PRAWDZIWEGO Logowania Google ---
+    // --- Obsługa prawdziwego Logowania Google ---
     document.getElementById('googleLoginBtn').addEventListener('click', () => {
         signInWithPopup(auth, googleProvider)
             .then((result) => {
@@ -346,20 +350,19 @@
             });
     });
 
-    // --- Obsługa prawdziwej Rejestracji E-mail/Hasło ---
+    // --- Obsługa prawdziwej Rejestracji E-mail/Hasło (NICK USUNIĘTY) ---
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault(); // Zapobiega przeładowaniu strony
         
         const email = document.getElementById('register-email').value;
         const password = document.getElementById('register-password').value;
-        const name = document.getElementById('register-name').value;
 
         // Firebase: Stwórz nowego użytkownika
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Sukces
                 const user = userCredential.user;
-                alert(`Konto w Vorze stworzone pomyślnie dla ${name} (${user.email})!`);
+                alert(`Konto w Vorze stworzone pomyślnie dla ${user.email}! Jesteś zalogowany.`);
                 // Tutaj możesz przekierować użytkownika na stronę główną lub do panelu
             })
             .catch((error) => {
