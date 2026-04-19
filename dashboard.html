@@ -102,7 +102,7 @@
 
         .history-title { font-size: 0.85em; font-weight: bold; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
 
-        /* Lista Tytułów Czatów (Działająca) */
+        /* Lista Tytułów Czatów (Naprawiona LOGIKA JS) */
         .chat-titles-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
 
         .chat-title-item {
@@ -131,7 +131,7 @@
         .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.8em; text-align: center; }
 
         /* ========================================= */
-        /* --- GŁÓWNA TREŚĆ (Czat na gradiencie) --- */
+        /* --- GŁÓWNA TREŚĆ (Czat na gradientu) --- */
         /* ========================================= */
         .app-main {
             flex: 1; display: flex; flex-direction: column;
@@ -386,9 +386,9 @@
     // OBSŁUGA DYNAMICZNEGO SIDEBARA (HISTORIA) ===
     // =========================================
     
-    // --- Dodawanie Nowego Czatu do Historii Sidebara (Normalna nazwa) ---
+    // !!! NOWE: Funkcja dodawania nowego czatu do historii Sidebara !!!
     const dodajCzatDoHistoriiSidebar = (trescUsera) => {
-        // !!! NOWE: Tytuł na podstawie pierwszych 30 znaków wiadomości !!!
+        // Tytuł na podstawie pierwszych 30 znaków wiadomości
         let tytulCzatu = trescUsera.trim();
         if (tytulCzatu.length > 30) { tytulCzatu = tytulCzatu.substring(0, 30) + '...'; }
 
@@ -410,12 +410,23 @@
             e.stopPropagation(); // Zapobiega kliknięciu w tytuł czatu
             if (confirm(`Czy na pewno chcesz usunąć czat "${tytulCzatu}"?`)) {
                 titleItemEl.remove();
+                // Tutaj można dodać usuwanie czatu z Firebase Firestore
             }
+        });
+
+        // Kliknięcie w tytuł czatu (póki co tylko zaznacza, nie ładuje)
+        titleItemEl.addEventListener('click', () => {
+            // Odznacz inne
+            const actives = historyListEl.querySelectorAll('.active');
+            actives.forEach(el => el.classList.remove('active'));
+            // Zaznacz ten
+            titleItemEl.classList.add('active');
+            // Tutaj ewentualnie ładuj czat z Firestore
         });
 
         // Połącz elementy i dodaj na górę listy historii
         titleItemEl.appendChild(textEl); titleItemEl.appendChild(deleteBtnEl);
-        historyListEl.prepend(titleItemEl);
+        historyListEl.prepend(titleItemEl); // Dodaj na początek listy
     };
 
     // =========================================
@@ -460,23 +471,27 @@
 
     // === PRAWDZIWA KOMUNIKACJA Z AI GOOGLE ===
     const wyslijZapytanieDoAI = async (trescUsera) => {
+        const messageText = trescUsera.trim();
+        if (messageText.length === 0) return;
+
         inputEl.value = ""; inputEl.style.height = 'auto'; btnSendEl.classList.remove('active'); 
 
-        // 1. Dodaj Twoje pytanie
-        dodajWiadomoscDoWidoku(trescUsera, true);
-        
-        // 1a. !!! NOWE: Stwórz Tytuł w bocznym menu przy PIERWSZEJ wiadomości !!! ===
-        if (historyEl.getElementsByClassName('message user').length === 1) {
-            dodajCzatDoHistoriiSidebar(trescUsera); 
+        // !!! NAPRAWIONO: Sprawdź, czy to pierwsza wiadomość w nowym czacie. Jeśli tak, dodaj tytuł do sidebara !!! ===
+        const messagesBefore = historyEl.getElementsByClassName('message user');
+        if (messagesBefore.length === 0) {
+            dodajCzatDoHistoriiSidebar(messageText); 
         }
 
+        // 1. Dodaj Twoje pytanie do czatu na stronie
+        dodajWiadomoscDoWidoku(messageText, true);
+        
         // 2. Pokaż kropki pisania
         pokazPisanieVory();
 
         // 3. Przygotuj dane dla Google
         const payload = {
             contents: [{
-                parts: [{ text: trescUsera }]
+                parts: [{ text: messageText }]
             }]
         };
 
@@ -492,7 +507,7 @@
 
             const data = await response.json();
 
-            // 5. WYDOBĄDŹ ODPOWIEDŹ Z DANYCH GOOGLE (Format bbeta)
+            // 5. WYDOBĄDŹ ODPOWIEDŹ Z DANYCH GOOGLE (Format v1beta)
             const trescVory = data.candidates[0].content.parts[0].text;
 
             // 6. Pokaz odpowiedź Vory w czacie
@@ -511,10 +526,8 @@
     // =========================================
 
     const obslozWyslanie = () => {
-        const text = inputEl.value.trim();
-        if (text.length > 0) {
-            wyslijZapytanieDoAI(text);
-        }
+        const text = inputEl.value;
+        wyslijZapytanieDoAI(text);
     };
 
     // Kliknięcie strzałki
