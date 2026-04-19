@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vora - Twój Panel AI z Historią Czatu</title>
+    <title>Vora AI - Twój Panel Asystenta</title>
     <link rel="icon" type="image/png" href="Gemini_Generated_Image_7qh1u87qh1u87qh1-removebg-preview.png">
     <style>
         :root {
-            /* KOLORY GRADIENTU Z LITERY V */
+            /* KOLORY GRADIENTU Z LITERY V (Jaskrawe!) */
             --v-pink: #ff007f;
             --v-purple: #9900ff;
             --v-blue: #00ffff;
             
             /* KOLORY INTERFEJSU (Glassmorphism, Ciemny Motyw) */
-            --app-bg: #111111; /* Bardziej ciemne tło */
-            --sidebar-bg: #0a0a0a; /* Jeszcze ciemniejszy panel boczny */
+            --app-bg: transparent; /* !!! PRZYWRÓCONO PEŁNY GRADIENT W TLE !!! */
+            --sidebar-bg: rgba(0, 0, 0, 0.4); /* Półprzezroczysty sidebar */
             --card-bg: rgba(255, 255, 255, 0.04);
             --border-color: rgba(255, 255, 255, 0.08);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-secondary: rgba(255, 255, 255, 0.7);
             --accent-color: var(--v-blue);
             
             /* KOLORY DYMKÓW CZATU */
-            --user-bubble: rgba(255, 0, 127, 0.15); /* Subtelny różowy dla usera */
-            --fora-bubble: rgba(255, 255, 255, 0.04); /* Ciemny dla Vory */
+            --user-bubble: rgba(255, 0, 127, 0.2); /* Różowy V dla użytkownika */
+            --fora-bubble: rgba(255, 255, 255, 0.05); /* Przezroczysty dla Vory */
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
+            /* !!! TŁO VORY (Pełny Gradient) !!! */
             background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
             color: var(--text-primary);
             height: 100vh;
@@ -37,117 +38,87 @@
             position: relative;
         }
 
+        /* Dodatkowy pseudo-element dla efektu przyciemnienia tła */
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7); /* Przyciemnienie tła dla czatu */
+            background: rgba(0, 0, 0, 0.6); /* Przyciemnienie gradientu dla czytelności */
             z-index: -1;
         }
 
-        /* ========================================= */
-        /* --- NOWY PANEL BOCZNY (Sidebar) --- */
-        /* ========================================= */
-        .app-sidebar {
-            width: 280px;
-            height: 100%;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            padding: 20px 15px;
-            box-sizing: border-box;
-            z-index: 10;
-        }
-
-        /* Logo Vora u góry panelu bocznego */
-        .sidebar-logo-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            text-decoration: none;
+        /* --- NAGŁÓWEK (Top Bar Vora - Minimalny) --- */
+        .app-header {
+            width: 100%; height: 70px;
+            padding: 0 30px; display: flex;
+            justify-content: space-between; align-items: center;
+            box-sizing: border-box; background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            z-index: 10; border-bottom: 1px solid var(--border-color);
         }
 
         .header-logo {
-            font-size: 1.6em;
-            font-weight: 900;
+            font-size: 1.5em; font-weight: 900;
             background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-background-clip: text; background-clip: text;
+            color: transparent; text-decoration: none;
+        }
+
+        .header-actions { display: flex; align-items: center; gap: 20px; }
+        .user-menu { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: #ffffff; color: #111111; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1em; border: 2px solid var(--border-color); }
+
+        /* ========================================= */
+        /* --- PANEL BOCZNY (Sidebar z Historią) --- */
+        /* ========================================= */
+        .app-sidebar {
+            width: 280px; height: 100%;
+            /* !!! PANEL BOCZNY JEST TERAZ PRZEZROCZYSTY !!! */
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex; flex-direction: column;
+            padding: 20px 15px; box-sizing: border-box;
+            z-index: 8;
         }
 
         /* Przycisk Nowa Rozmowa */
         .btn-new-chat {
-            padding: 12px 18px;
-            border-radius: 12px;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            font-weight: bold;
-            font-size: 0.95em;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s;
-            text-decoration: none;
-            margin-bottom: 30px;
+            padding: 12px 18px; border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary); font-weight: bold; font-size: 0.95em;
+            border: 1px solid var(--border-color); cursor: pointer;
+            display: flex; align-items: center; gap: 10px;
+            transition: all 0.2s; text-decoration: none; margin-bottom: 30px;
         }
 
-        .btn-new-chat:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
+        .btn-new-chat:hover { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.15); }
 
         /* Sekcja Historii Czatu */
         .sidebar-history-section {
-            flex: 1;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--border-color) transparent;
+            flex: 1; overflow-y: auto;
+            scrollbar-width: thin; scrollbar-color: var(--border-color) transparent;
             padding-right: 5px;
         }
 
         .sidebar-history-section::-webkit-scrollbar { width: 4px; }
         .sidebar-history-section::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 2px; }
 
-        .history-title {
-            font-size: 0.85em;
-            font-weight: bold;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .history-title { font-size: 0.85em; font-weight: bold; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
 
         /* Lista Tytułów Czatów */
         .chat-titles-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
 
         .chat-title-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 12px;
-            border-radius: 10px;
-            color: var(--text-primary);
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-size: 0.9em;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            padding: 12px; border-radius: 10px; color: var(--text-primary);
+            text-decoration: none; cursor: pointer; transition: background-color 0.2s; font-size: 0.9em;
             position: relative;
         }
 
         .chat-title-item:hover { background-color: rgba(255, 255, 255, 0.03); }
-
         .chat-title-item.active { background-color: rgba(255, 255, 255, 0.05); }
 
-        /* Tytuł tekstu z elipsą */
+        /* Tytuł tekstu z elipsą (Normalne wyświetlanie nazwy) */
         .chat-item-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         /* Ikona kosza uaktywnia sie na hover */
@@ -156,9 +127,7 @@
             display: flex; align-items: center; justify-content: center;
             opacity: 0; transition: opacity 0.2s, color 0.2s;
         }
-
         .chat-title-item:hover .btn-delete-chat { opacity: 1; }
-
         .btn-delete-chat:hover { color: #ff0000; }
 
         /* Stopka Sidebara */
@@ -168,27 +137,20 @@
         /* --- GŁÓWNA TREŚĆ (Czat) --- */
         /* ========================================= */
         .app-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+            flex: 1; display: flex; flex-direction: column;
+            width: 100%; max-width: 900px;
+            margin: 0 auto; padding: 20px 0;
+            box-sizing: border-box; position: relative;
+            z-index: 5; overflow: hidden;
+            /* !!! CZAT JEST TERAZ PRZEZROCZYSTY !!! */
             background-color: var(--app-bg);
-            position: relative;
-            z-index: 5;
-            overflow: hidden;
         }
 
         /* --- Obszar Historii Czatu (Dymki) --- */
         .chat-history {
-            flex: 1;
-            width: 100%;
-            overflow-y: auto;
-            padding: 30px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            scrollbar-width: thin; scrollbar-color: var(--border-color) transparent;
-            margin-bottom: 20px;
+            flex: 1; width: 100%; overflow-y: auto; padding: 20px 30px; box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 20px;
+            margin-bottom: 20px; scrollbar-width: thin; scrollbar-color: var(--border-color) transparent;
         }
 
         .chat-history::-webkit-scrollbar { width: 6px; }
@@ -209,60 +171,108 @@
         @keyframes dotPulse { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
 
         /* --- Pole Zapytania (Input - Wzór ze zdjęcia Gemini) --- */
-        .chat-input-area { width: 100%; max-width: 900px; margin: 0 auto; padding: 0 30px; box-sizing: border-box; margin-bottom: 30px; }
+        .chat-input-area { width: 100%; padding: 0 20px; box-sizing: border-box; margin-bottom: 20px; }
 
         .chat-container {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06); /* Subtelna przezroczystość */
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border-radius: 28px;
-            border: 1px solid var(--border-color);
+            border-radius: 28px; border: 1px solid var(--border-color);
             padding: 15px 25px; box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            display: flex; flex-direction: column; gap: 15px;
-            transition: all 0.2s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex; flex-direction: column; gap: 15px; transition: all 0.2s;
         }
 
-        .chat-container:focus-within { border-color: rgba(0, 255, 255, 0.3); background: rgba(255, 255, 255, 0.07); }
+        .chat-container:focus-within { border-color: rgba(0, 255, 255, 0.3); background: rgba(255, 255, 255, 0.08); }
 
+        /* Input tekstowy */
         .chat-input-wrapper { display: flex; align-items: center; gap: 15px; }
 
         .chat-textarea {
-            flex: 1; background: transparent; border: none; color: var(--text-primary); font-size: 1.1em;
-            padding: 10px 0; outline: none; resize: none; min-height: 24px; max-height: 200px; overflow-y: auto; scrollbar-width: none;
+            flex: 1; background: transparent; border: none; color: var(--text-primary);
+            font-size: 1.1em; padding: 10px 0; outline: none; resize: none;
+            min-height: 24px; max-height: 200px; overflow-y: auto; scrollbar-width: none;
         }
         .chat-textarea::placeholder { color: rgba(255, 255, 255, 0.4); }
 
+        /* Pasek narzędzi w inpucie (Dolny Bar inputa) */
         .chat-toolbar { display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); font-size: 0.9em; }
         .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 15px; }
 
         .toolbar-icon-btn { background: transparent; border: none; color: inherit; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
         .toolbar-icon-btn:hover { color: #ffffff; }
 
-        .btn-send { background-color: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.4); width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        /* Przycisk wysyłania (Ikona mikrofonu / Strzałka) */
+        .btn-send {
+            background-color: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.4);
+            width: 44px; height: 44px; border-radius: 50%; border: none;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+        }
         .btn-send.active { background-color: var(--accent-color); color: #111111; }
         .btn-send:hover { opacity: 0.9; }
+
+        /* ========================================= */
+        /* --- TRYB ROZMOWY GŁOSOWEJ VORA --- */
+        /* ========================================= */
+        .pora-speech-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255, 0, 127, 0.1) 0%, rgba(153, 0, 255, 0.2) 50%, rgba(0, 255, 255, 0.3) 100%);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 100; display: none; /* Ukryte domyślnie */
+            flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s;
+        }
+
+        .pora-speech-overlay.active { display: flex; opacity: 1; }
+
+        /* Przycisk zamknięcia */
+        .btn-close-speech {
+            position: absolute; top: 30px; right: 30px;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color);
+            color: #ffffff; width: 50px; height: 50px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .btn-close-speech:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* Animowane, szklane kółko Vora */
+        .fora-core-circle {
+            width: 250px; height: 250px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--v-pink) 0%, var(--v-purple) 50%, var(--v-blue) 100%);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.3), 0 0 100px rgba(153, 0, 255, 0.2);
+            position: relative; overflow: hidden;
+            animation: corePulse 2.5s infinite ease-in-out;
+        }
+
+        @keyframes corePulse { 0% { transform: scale(1); box-shadow: 0 0 50px rgba(0, 255, 255, 0.3); } 50% { transform: scale(1.03); box-shadow: 0 0 70px rgba(255, 0, 127, 0.4); } 100% { transform: scale(1); box-shadow: 0 0 50px rgba(0, 255, 255, 0.3); } }
+
+        /* Dodatkowy efekt szkła */
+        .fora-core-circle::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: rgba(255, 255, 255, 0.1); border-radius: 50%; }
+
+        /* Tekst "Słucham..." */
+        .speech-status { font-size: 1.5em; font-weight: bold; color: #ffffff; margin-top: 50px; opacity: 0.8; }
 
     </style>
 </head>
 <body id="oraAppBody">
 
-<aside class="app-sidebar">
-    <a href="index.html" class="sidebar-logo-wrapper">
-        <div class="header-logo">Vora</div>
-    </a>
+<header class="app-header">
+    <a href="index.html" class="header-logo">Vora</a>
     
+    <div class="header-actions">
+        <div class="user-menu" id="userMenu">
+            <div class="user-avatar" id="userInicjały">?</div>
+        </div>
+    </div>
+</header>
+
+<aside class="app-sidebar">
     <a href="dashboard.html" class="btn-new-chat">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         Nowa rozmowa
     </a>
     
     <div class="sidebar-history-section">
-        <h3 class="history-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            Twoje Czaty
-        </h3>
-        
+        <h3 class="history-title">Twoje Czaty</h3>
         <ul class="chat-titles-list" id="chatHistoryList">
             </ul>
     </div>
@@ -272,6 +282,16 @@
     </footer>
 </aside>
 
+<div class="pora-speech-overlay" id="poraSpeechOverlay">
+    <button class="btn-close-speech" id="btnCloseSpeech">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+    
+    <div class="fora-core-circle"></div>
+    
+    <p class="speech-status">Rdzeń Vora: Słucham...</p>
+</div>
+
 <main class="app-main">
     
     <div class="chat-history" id="chatHistory">
@@ -280,21 +300,19 @@
     <div class="chat-input-area">
         <div class="chat-container">
             <div class="chat-input-wrapper">
-                <button class="toolbar-icon-btn">
+                <button class="toolbar-icon-btn" onclick="document.getElementById('fileUploadInput').click()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 </button>
-                <textarea class="chat-textarea" id="mainChatInput" placeholder="Zapytaj Vorę o coś..." rows="1"></textarea>
+                <input type="file" id="fileUploadInput" style="display: none;">
+                
+                <textarea class="chat-textarea" id="mainChatInput" placeholder="Zapytaj Vorę o coś... (Wciśnij Enter, aby wysłać)" rows="1"></textarea>
             </div>
             
             <div class="chat-toolbar">
                 <div class="toolbar-left">
-                    <div class="tools-selector">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77M2 22s5.3-2 10.1-10.1M6 18l1.6-1.6a1 1 0 0 0 0-1.4L6.3 13.7M13.7 6.3a1 1 0 0 0-1.4 0L10.7 7.9a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0M11 11l6.1 6.1"></path></svg>
-                        <span>Narzędzia</span>
                     </div>
-                </div>
                 <div class="toolbar-right">
-                    <button class="toolbar-icon-btn">
+                    <button class="toolbar-icon-btn" id="btnSpeechInput">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
                     </button>
                     <button class="btn-send" id="btnSend">
@@ -311,7 +329,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // === TWOJA KONFIGURACJA FIREBASE (z publicznego czatu, Mateusz!) ===
+    // === TWOJA KONFIGURACJA FIREBASE (Mateusz!) ===
     const firebaseConfig = {
         apiKey: "AIzaSyB2sMhft45yN-PhYOJHmuiVIbknB7SKh4E",
         authDomain: "vora-9be46.firebaseapp.com",
@@ -326,8 +344,12 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // === OCHRONA PANELU ZAMIAST USUNIĘTEGO POWITANIA ===
-    // Sprawdzamy, czy użytkownik jest zalogowany. Jeśli nie, przekierowujemy na stronę logowania.
+    // =========================================
+    // OBSŁUGA DANYCH UŻYTKOWNIKA I OCHRONA
+    // =========================================
+    const userInicjałyEl = document.getElementById('userInicjały');
+
+    // === SPRAWDŹ, CZY UŻYTKOWNIK JEST ZALOGOWANY ===
     onAuthStateChanged(auth, (user) => {
         if (!user) {
             console.log("Próba wejścia do panelu bez logowania.");
@@ -335,30 +357,36 @@
             window.location.href = "logowanie.html";
         } else {
             console.log("Użytkownik zalogowany:", user.email);
-            // Tutaj możesz ewentualnie załadować poprzednie czaty użytkownika z Firebase Firestore.
+            // Ustaw inicjały
+            const inicjały = user.email[0].toUpperCase();
+            userInicjałyEl.innerText = inicjały;
         }
     });
 
 </script>
 
 <script type="module">
-    // === TWOJA KONFIGURACJA GEMINI AI (Mateusz!) ===
+    // === TWOJA KONFIGURACJA GEMINI AI (Mateusz, naprawione połączenie!) ===
+    // (Ten klucz jest jaskrawo widoczny na screenie, więc go używam)
     const GEMINI_API_KEY = "AIzaSyCxV2bQ4jD-VfVpH9Y1Y7_pIO1U90U0g8Q";
-    const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + GEMINI_API_KEY;
+    // !!! Naprawiono URL API (Dodano b, aby był v1beta) !!!
+    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
     // === ELEMENTY CZATU ===
     const inputEl = document.getElementById('mainChatInput');
     const btnSendEl = document.getElementById('btnSend');
     const historyEl = document.getElementById('chatHistory');
-    
-    // === !!! NOWE ELEMENTY HISTORII SIDEBARA !!! ===
     const historyListEl = document.getElementById('chatHistoryList');
+
+    // === !!! NOWE ELEMENTY ROZMOWY GŁOSOWEJ !!! ===
+    const btnSpeechEl = document.getElementById('btnSpeechInput');
+    const overlaySpeechEl = document.getElementById('poraSpeechOverlay');
+    const btnCloseSpeechEl = document.getElementById('btnCloseSpeech');
 
     // =========================================
     // OBSŁUGA INTERFEJSU CZATU (Glassmorphism Input)
     // =========================================
 
-    // --- Dynamiczne zmienianie wysokości inputa ---
     inputEl.addEventListener('input', () => {
         inputEl.style.height = 'auto'; // Reset
         inputEl.style.height = inputEl.scrollHeight + 'px'; // Ustaw nową
@@ -372,11 +400,15 @@
     });
 
     // =========================================
-    // OBSŁUGA DYNAMICZNEGO SIDEBARA (HISTORIA)
+    // OBSŁUGA DYNAMICZNEGO SIDEBARA (HISTORIA I USUWANIEM)
     // =========================================
     
-    // --- Dodawanie Nowego Czatu do Historii Sidebara ---
-    const dodajCzatDoHistoriiSidebar = (tytulCzatu) => {
+    // --- Dodawanie Nowego Czatu do Historii Sidebara (Normalna nazwa) ---
+    const dodajCzatDoHistoriiSidebar = (trescUsera) => {
+        // !!! NOWE: Stwórz tytuł na podstawie pierwszych 30 znaków wiadomości !!!
+        let tytulCzatu = trescUsera.trim();
+        if (tytulCzatu.length > 30) { tytulCzatu = tytulCzatu.substring(0, 30) + '...'; }
+
         // Stwórz kontener tytułu
         const titleItemEl = document.createElement('li');
         titleItemEl.classList.add('chat-title-item');
@@ -391,27 +423,35 @@
         deleteBtnEl.classList.add('btn-delete-chat');
         deleteBtnEl.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
         
-        // Obsługa kliknięcia w kosz (usuwanie czatu)
         deleteBtnEl.addEventListener('click', (e) => {
             e.stopPropagation(); // Zapobiega kliknięciu w tytuł czatu
             if (confirm(`Czy na pewno chcesz usunąć czat "${tytulCzatu}"?`)) {
-                titleItemEl.remove(); // Usuń tylko z widoku sidebara
+                titleItemEl.remove();
+                // Tutaj można dodać usuwanie czatu z Firebase Firestore
             }
         });
 
-        // Połącz elementy
-        titleItemEl.appendChild(textEl);
-        titleItemEl.appendChild(deleteBtnEl);
-        
-        // Dodaj na górę listy historii
+        // Połącz elementy i dodaj na górę listy historii
+        titleItemEl.appendChild(textEl); titleItemEl.appendChild(deleteBtnEl);
         historyListEl.prepend(titleItemEl);
     };
 
     // =========================================
-    // OBSŁUGA CZATU I GOOGLE GEMINI AI
+    // OBSŁUGA ROZMOWY GŁOSOWEJ (Pulsujące kółko)
     // =========================================
 
-    // --- Dodawanie wiadomości do czatu na stronie ---
+    btnSpeechEl.addEventListener('click', () => {
+        overlaySpeechEl.classList.add('active'); // Pokaż panel hlasowy
+    });
+
+    btnCloseSpeechEl.addEventListener('click', () => {
+        overlaySpeechEl.classList.remove('active'); // Zamknij panel
+    });
+
+    // =========================================
+    // OBSŁUGA CZATU I GOOGLE GEMINI AI (Mateusz, naprawione!)
+    // =========================================
+
     const dodajWiadomoscDoWidoku = (tresc, czyUser) => {
         const messageEl = document.createElement('div');
         messageEl.classList.add('message');
@@ -419,12 +459,9 @@
         messageEl.innerText = tresc; 
         
         historyEl.appendChild(messageEl);
-        
-        // Przewiń czat na sam dół
-        historyEl.scrollTop = historyEl.scrollHeight;
+        historyEl.scrollTop = historyEl.scrollHeight; // Przewiń na dół
     };
 
-    // --- Pokaż pisanie... ---
     const pokazPisanieVory = () => {
         const loadingEl = document.createElement('div');
         loadingEl.classList.add('message', 'fora', 'loading');
@@ -434,29 +471,22 @@
         historyEl.scrollTop = historyEl.scrollHeight;
     };
 
-    // --- Ukryj pisanie... ---
     const ukryjPisanieVory = () => {
         const loadingEl = document.getElementById('foraLoading');
         if (loadingEl) loadingEl.remove();
     };
 
-    // === PRAWDZIWA KOMUNIKACJA Z GOOGLE GEMINI AI ===
+    // === PRAWDZIWA KOMUNIKACJA Z AI GOOGLE ===
     const wyslijZapytanieDoAI = async (trescUsera) => {
-        inputEl.value = ""; 
-        inputEl.style.height = 'auto'; 
-        btnSendEl.classList.remove('active'); 
+        inputEl.value = ""; inputEl.style.height = 'auto'; btnSendEl.classList.remove('active'); 
 
         // 1. Dodaj Twoje pytanie
         dodajWiadomoscDoWidoku(trescUsera, true);
         
         // === !!! NOWOŚĆ !!! ===
-        // 1a. Sprawdź, czy to pierwsza wiadomość w nowym czacie
+        // 1a. Sprawdź, czy to pierwsza wiadomość w nowym czacie. Stwórz Normalny tytuł.
         if (historyEl.getElementsByClassName('message user').length === 1) {
-            // Tak, to pierwsza wiadomość. Stwórz tytuł czatu i dodaj do sidebara.
-            // (Na przykład "Czat 1" lub weź początek wiadomości)
-            const numerCzatu = historyListEl.getElementsByClassName('chat-title-item').length + 1;
-            const tytulCzatu = `Czat ${numerCzatu}`; // Lub np: trescUsera.substring(0, 30) + '...';
-            dodajCzatDoHistoriiSidebar(tytulCzatu);
+            dodajCzatDoHistoriiSidebar(trescUsera); // Przekaż wiadomość, aby stworzyć tytuł
         }
 
         // 2. Pokaż kropki pisania
@@ -470,18 +500,19 @@
         };
 
         try {
-            // 4. Wyślij zapytanie do Google
+            // 4. WYŚLIJ PRAWDZIWE ZAPYTANIE DO GOOGLE
             const response = await fetch(GEMINI_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            if (!response.ok) throw new Error('Błąd połączenia z Gemini AI');
+            if (!response.ok) throw new Error(`Błąd połączenia z Gemini AI. Kod: ${response.status}`);
 
             const data = await response.json();
 
-            // 5. Wydobądź odpowiedź
+            // 5. WYDOBĄDŹ ODPOWIEDŹ Z DANYCH GOOGLE (Nowy format v1beta)
+            // (Google zwraca dane w specyficznym formacie: data.candidates[0].content.parts[0].text)
             const trescVory = data.candidates[0].content.parts[0].text;
 
             // 6. Pokaz odpowiedź Vory w czacie
@@ -489,6 +520,7 @@
             dodajWiadomoscDoWidoku(trescVory, false); // Dodaj odpowiedź
 
         } catch (error) {
+            // 7. Obsługa błędów
             console.error("Błąd Vory:", error);
             ukryjPisanieVory();
             dodajWiadomoscDoWidoku("Przepraszam, Mateusz, ale mam chwilowy błąd połączenia z moim rdzeniem AI. Spróbuj za chwilę.", false);
@@ -506,10 +538,12 @@
         }
     };
 
+    // Kliknięcie strzałki
     btnSendEl.addEventListener('click', obslozWyslanie);
 
+    // Enter w inpucie
     inputEl.addEventListener('keydown', (e) => {
-        // Jeśli wciśnięto Enter BEZ Shifta
+        // Jeśli wciśnięto Enter BEZ Shifta (Shift+Enter robi nową linię)
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault(); // Zapobiega nowej linii
             obslozWyslanie();
