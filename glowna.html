@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfederacja Prawicy Narodowej — Strona Główna</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset i zmienne globalne */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --primary: #0a192f;       /* Głęboki granat korporacyjny */
+            --secondary: #172a45;     /* Jaśniejszy granat do sekcji */
+            --accent-red: #dc2626;    /* Czerwień narodowa */
+            --accent-gold: #b45309;   /* Stonowane złoto */
+            --text-light: #f8fafc;    /* Jasny tekst / tło */
+            --text-dark: #1e293b;     /* Ciemny tekst */
+            --bg-light: #f8fafc;      /* Tło jasnych sekcji */
+            --bg-alt: #f1f5f9;        /* Alternatywne tło dla kontrastu */
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Pasek nawigacyjny */
+        .navbar {
+            background-color: var(--primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            border-bottom: 3px solid var(--accent-red);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+        }
+
+        /* Logo po lewej stronie */
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 14px;
+        }
+
+        .logo-img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            color: var(--text-light);
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .logo-text span {
+            color: var(--accent-red);
+        }
+
+        /* Menu nawigacji */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #cbd5e1;
+        }
+
+        /* Sekcja Główna (Hero) */
+        .hero {
+            background: linear-gradient(135deg, rgba(10,25,47,0.95) 0%, rgba(23,42,69,0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=1920') no-repeat center center/cover;
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            margin-top: 79px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            background-color: var(--accent-red);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: inline-block;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 25px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: #cbd5e1;
+            font-weight: 300;
+        }
+
+        /* Przyciski */
+        .btn {
+            display: inline-block;
+            padding: 15px 36px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-red);
+            color: white;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.35);
+        }
+
+        .btn-primary:hover {
+            background-color: #b91c1c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(220, 38, 38, 0.5);
+        }
+
+        /* Sekcje ogólne */
+        .section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-alt {
+            background-color: var(--bg-alt);
+        }
+
+        .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 65px;
+        }
+
+        .section-header h2 {
+            font-size: 2.6rem;
+            color: var(--primary);
+            font-weight: 800;
+            position: relative;
+            padding-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 4px;
+            background-color: var(--accent-red);
+            border-radius: 2px;
+        }
+
+        /* Siatka Postulatów */
+        .grid-postulaty {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+        }
+
+        .card {
+            background: white;
+            padding: 45px 35px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+            border-top: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-top-color: var(--accent-red);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.45rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        /* Sekcja O nas (Split layout) */
+        .about-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            color: #475569;
+            font-size: 1.1rem;
+        }
+
+        .about-image {
+            flex: 1;
+            background: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200') no-repeat center center/cover;
+            height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--accent-gold);
+            border-radius: 8px;
+            z-index: -1;
+        }
+
+        /* Stopka */
+        footer {
+            background-color: var(--primary);
+            color: var(--text-light);
+            padding: 50px 20px;
+            text-align: center;
+            border-top: 4px solid var(--accent-gold);
+        }
+
+        footer p {
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        /* Responsywność */
+        @media (max-width: 992px) {
+            .about-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+            .about-image {
+                width: 100%;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none; /* Ukryte klasyczne menu na telefonach */
+            }
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .section, .section-inner {
+                padding: 60px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nawigacja -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo-link">
+                <!-- Plik logo podany przez Ciebie -->
+                <img src="SPOILER_c0b2996e06abf2a4b45e4838b88cf5a5.png" alt="KPN Logo" class="logo-img">
+                <div class="logo-text">Konfederacja <span>PN</span></div>
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="#o-nas" class="nav-link">O nas</a></li>
+                <li><a href="#postulaty" class="nav-link">Postulaty</a></li>
+                <li><a href="#program" class="nav-link">Deklaracja</a></li>
+                <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sekcja Hero -->
+    <header class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">Suwerenność • Tożsamość • Rozwój</span>
+            <h1>Tradycja, Wolność Gospodarcza, Silna Polska</h1>
+            <p>Budujemy nowoczesne państwo wierne narodowym wartościom. Dołącz do struktur Konfederacji Prawicy Narodowej i twórz z nami bezpieczną przyszłość.</p>
+            <a href="#postulaty" class="btn btn-primary">Poznaj Nasz Program</a>
+        </div>
+    </header>
+
+    <!-- Sekcja O nas -->
+    <section id="o-nas" class="section">
+        <div class="section-header">
+            <h2>Kim Jesteśmy</h2>
+        </div>
+        <div class="about-container">
+            <div class="about-text">
+                <h3>Nowoczesny patriotyzm w praktyce</h3>
+                <p>Konfederacja Prawicy Narodowej to ruch zrzeszający ludzi, dla których dobro wspólne, suwerenność Rzeczypospolitej oraz tradycyjne wartości stanowią fundament działalności publicznej.</p>
+                <p>Nie patrzymy biernie na zachodzące zmiany — proponujemy odważne, wolnorynkowe reformy gospodarcze połączone z bezkompromisową obroną polskiego interesu narodowego na arenie międzynarodowej.</p>
+            </div>
+            <div class="about-image"></div>
+        </div>
+    </section>
+
+    <!-- Sekcja Postulatów -->
+    <div class="section-alt">
+        <section id="postulaty" class="section-inner">
+            <div class="section-header">
+                <h2>Filary Programowe</h2>
+            </div>
+            
+            <div class="grid-postulaty">
+                <!-- Karta 1 -->
+                <div class="card">
+                    <div class="card-icon">🦅</div>
+                    <h3>Nienaruszalna Suwerenność</h3>
+                    <p>Wszelkie kluczowe decyzje polityczne i prawne muszą być podejmowane w Warszawie. Sprzeciwiamy się bezrefleksyjnemu oddawaniu kompetencji organizacjom międzynarodowym.</p>
+                </div>
+
+                <!-- Karta 2 -->
+                <div class="card">
+                    <div class="card-icon">💼</div>
+                    <h3>Niskie i Proste Podatki</h3>
+                    <p>Uwolnienie potencjału polskich przedsiębiorców poprzez radykalne uproszczenie przepisów skarbowych, likwidację zbędnej biurokracji i redukcję podatków dochodowych.</p>
+                </div>
+
+                <!-- Karta 3 -->
+                <div class="card">
+                    <div class="card-icon">🛡️</div>
+                    <h3>Bezpieczeństwo i Silna Armia</h3>
+                    <p>Modernizacja Wojska Polskiego, wzmocnienie ochrony granic kraju oraz budowa silnego i niezależnego przemysłu zbrojeniowego jako gwarant pokoju.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Stopka -->
+    <footer>
+        <p>&copy; 2026 Konfederacja Prawicy Narodowej. Wszelkie prawa zastrzeżone.</p>
+    </footer>
+
+</body>
+</html>
